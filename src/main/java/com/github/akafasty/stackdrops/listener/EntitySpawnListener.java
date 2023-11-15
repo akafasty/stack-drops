@@ -30,7 +30,8 @@ public class EntitySpawnListener implements Listener {
         Item item = (Item) event.getEntity();
         int stackAmount = item.getItemStack().getAmount();
 
-        Item entity = Arrays.stream(event.getEntity().getLocation().getChunk().getEntities())
+        Item entity = event.getEntity().getNearbyEntities(8, 8, 8)
+                .stream()
                 .filter(context -> context.getType() == event.getEntityType())
                 .filter(context -> context.hasMetadata(StackdropsConstants.META_DATA))
                 .map(Item.class::cast)
