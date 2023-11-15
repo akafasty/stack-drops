@@ -1,0 +1,4 @@
+name: stackdrops
+version: 1.0.0
+main: com.github.akafasty.stackdrops.StackdropsPlugin
+author: akafasty
