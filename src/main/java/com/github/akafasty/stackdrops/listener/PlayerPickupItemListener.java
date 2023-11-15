@@ -13,6 +13,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.plugin.Plugin;
 
+import java.util.Map;
+
 public class PlayerPickupItemListener implements Listener {
 
     private final Plugin plugin;
@@ -30,9 +32,12 @@ public class PlayerPickupItemListener implements Listener {
         event.setCancelled(true);
 
         Player player = event.getPlayer();
+
+        if (player.getInventory().firstEmpty() == -1)
+            return;
+
         Item item = event.getItem();
         ItemStack drop = item.getItemStack();
-
         int stackAmount = event.getItem().getMetadata(StackdropsConstants.META_DATA).get(0).asInt();
 
         player.playSound(item.getLocation(), Sound.ITEM_PICKUP, 1f, 1f);
@@ -40,9 +45,11 @@ public class PlayerPickupItemListener implements Listener {
         while (stackAmount > 0) {
 
             if (player.getInventory().firstEmpty() == -1) {
-                item.setCustomName(String.format(StackdropsConstants.DISPLAY, NumberFormatter.numberFormat(stackAmount), drop.getType().name()));
+
+                item.setCustomName(String.format(StackdropsConstants.DISPLAY, NumberFormatter.numberFormat(stackAmount)));
                 item.setMetadata(StackdropsConstants.META_DATA, new FixedMetadataValue(plugin, stackAmount));
                 return;
+
             }
 
             int value = Math.min(64, stackAmount);
