@@ -28,6 +28,10 @@ public class EntitySpawnListener implements Listener {
             return;
 
         Item item = (Item) event.getEntity();
+
+        if (StackdropsConstants.BLACKLIST.contains(item.getItemStack().getType()))
+            return;
+
         int stackAmount = item.getItemStack().getAmount();
 
         Item entity = event.getEntity().getNearbyEntities(8, 8, 8)
