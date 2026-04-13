@@ -44,7 +44,9 @@ public class PlayerPickupItemListener implements Listener {
 
         while (stackAmount > 0) {
 
-            if (player.getInventory().firstEmpty() == -1) {
+            int emptySlot = player.getInventory().firstEmpty();
+
+            if (emptySlot == -1) {
 
                 item.setCustomName(String.format(StackdropsConstants.DISPLAY, NumberFormatter.numberFormat(stackAmount)));
                 item.setMetadata(StackdropsConstants.META_DATA, new FixedMetadataValue(plugin, stackAmount));
@@ -53,12 +55,13 @@ public class PlayerPickupItemListener implements Listener {
             }
 
             int value = Math.min(64, stackAmount);
+            ItemStack clone = new ItemStack(drop);
+
+            clone.setAmount(value);
 
             stackAmount -= value;
 
-            drop.setAmount(value);
-
-            player.getInventory().addItem(drop.clone());
+            player.getInventory().setItem(emptySlot, clone);
 
         }
 
